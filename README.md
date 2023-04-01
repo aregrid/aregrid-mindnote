@@ -4,7 +4,7 @@ a powelful mindnote by vue + javascript
 
 # preview
 
-https://tzhangchi.github.io/mindnote/
+https://aregrid.github.io/mindnote/#/
 
 # quick start
 

@@ -45,8 +45,7 @@ export default {
     };
   },
   created() {
-    this.getData();
-    this.$nextTick(() => this.$refs.title.focus());
+    // this.getData();
   },
   methods: {
     viewMindmap() {
@@ -151,10 +150,17 @@ export default {
       const editor = new EditorContainer();
       editor.page = page;
       document.querySelector("#editor-example").appendChild(editor);
+      this.editor = editor;
     },
   },
   mounted() {
     this.main();
+  },
+  unmounted() {
+    if (document.querySelector("#editor-example")) {
+      document.querySelector("#editor-example").innerHTML = null;
+      this.editor && this.editor.destroy();
+    }
   },
 };
 </script>

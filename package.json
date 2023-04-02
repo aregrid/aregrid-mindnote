@@ -9,6 +9,7 @@
         "docs": "NODE_ENV=production vite build && git add . && git commit -m 'docs pub' && git push origin master"
     },
     "dependencies": {
+        "@blocksuite/editor": "^0.5.0-20230326033652-70ca43c",
         "vue": "^3.0.5",
         "vue-router": "^4.0.0-rc.2",
         "vuex": "^4.0.0-rc.1"

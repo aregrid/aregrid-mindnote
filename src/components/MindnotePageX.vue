@@ -1,6 +1,11 @@
 <template>
   <div class="pape-mindnote">
-    <div class="pape-mindnote__bd">
+    <div class="pape-mindnote__bd" id="editor-example">
+      <!-- 
+      <div class="page-mindnote__mindmap" v-show="!isHideMindmap">
+        <canvas ref="mindmap"></canvas>
+      </div>
+
       <a class="btn-view-mindmap" v-show="isHideMindmap" @click="viewMindmap"
         >view mindmap</a
       >
@@ -10,30 +15,7 @@
         v-on:click="isHideMindmap = true"
         >close</a
       >
-
-      <div class="pape-mindnote__bd__title">
-        <input
-          type="text"
-          placeholder="Untitled"
-          v-model="title"
-          @change="onTitleChange"
-          ref="title"
-          class="input-title"
-        />
-      </div>
-      <div class="pape-mindnote__bd__tree">
-        <mindnote
-          class="mindnote"
-          ref="mindnote"
-          :propsitem="listItemData"
-          @press-input="saveMindnote"
-          @add-subitem="saveMindnote"
-          @delete-item="saveMindnote"
-        ></mindnote>
-      </div>
-      <div class="page-mindnote__mindmap" v-show="!isHideMindmap">
-        <canvas ref="mindmap"></canvas>
-      </div>
+       -->
     </div>
   </div>
 </template>
@@ -41,7 +23,11 @@
 <script>
 import Mindnote from "./MindnoteBox.vue";
 import { getLocalStorage, setLocalStorage } from "../utils/util.js";
+import { SimpleAffineEditor } from "@blocksuite/editor";
+import "@blocksuite/editor/themes/affine.css";
+
 import MindmapView from "./MindmapView/MindmapView";
+
 export default {
   name: "MindnotePage",
   components: {
@@ -140,7 +126,37 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    async function main() {
+      const { Workspace, Page, Text } = await import("@blocksuite/store");
+      const { AffineSchemas } = await import("@blocksuite/blocks/models");
+      const { EditorContainer } = await import("@blocksuite/editor");
+
+      // Create a workspace with one default page
+      const workspace = new Workspace({ id: "test" }).register(AffineSchemas);
+      const page = workspace.createPage("page0");
+
+      // Create default blocks in the page
+      const pageBlockId = page.addBlock("affine:page", {
+        title: new Text("Hello Mindnote!"),
+      });
+      const frameId = page.addBlock("affine:frame", {}, pageBlockId);
+      page.addBlock(
+        "affine:paragraph",
+        {
+          text: new Text("Start editing here!"),
+        },
+        frameId
+      );
+
+      // Init editor with the page store
+      const editor = new EditorContainer();
+      editor.page = page;
+      document.querySelector("#editor-example").appendChild(editor);
+    }
+
+    main();
+  },
 };
 </script>
 
@@ -150,7 +166,6 @@ export default {
   box-shadow: var(--block-shadow);
   padding-top: 40px;
 }
-
 .pape-mindnote__bd {
   margin-bottom: 15px;
   margin: 0 auto;
@@ -160,26 +175,6 @@ export default {
   background-color: #fff;
   border: 1px solid #efeff1;
   position: relative;
-}
-
-.pape-mindnote__bd__title {
-  padding: 10px 0;
-  border-bottom: 1px #eee solid;
-}
-
-.pape-mindnote__bd__tree {
-  padding-top: 20px;
-}
-
-.input-title {
-  width: 100%;
-  border: none;
-  min-height: 42px;
-  color: #16181a;
-  font-size: 34px;
-  font-weight: 600;
-  line-height: 48px;
-  outline: none;
 }
 .btn-view-mindmap {
   background: black;

@@ -9,7 +9,7 @@ const routes = [
   {
     path: "/mindnote/:mindnoteId",
     name: "MindnotePage",
-    component: () => import("../components/MindnotePage.vue"),
+    component: () => import("../components/MindnotePageX.vue"),
   },
 ];
 

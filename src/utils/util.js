@@ -1,24 +1,21 @@
-let keyVersion = '1.0.0';
+let keyVersion = "1.0.0";
 let buildTrueKey = (key) => {
-    return key + keyVersion;
+  return key + keyVersion;
 };
 export function setLocalStorage(key, value) {
-    return localStorage.setItem(buildTrueKey(key), JSON.stringify(value));
-};
-
+  return localStorage.setItem(buildTrueKey(key), JSON.stringify(value));
+}
 
 export function getLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(buildTrueKey(key)));
-};
+  return JSON.parse(localStorage.getItem(buildTrueKey(key)));
+}
 export function uniqueid() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (
-        c
-    ) {
-        const r = (Math.random() * 16) | 0,
-            v = c == "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-    });
-};
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 /**
  * Draws a rounded rectangle using the current state of the canvas.
@@ -39,92 +36,98 @@ export function uniqueid() {
  * @param {Boolean} [stroke = true] Whether to stroke the rectangle.
  */
 export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-    if (typeof stroke == 'undefined') {
-        stroke = true;
+  if (typeof stroke == "undefined") {
+    stroke = true;
+  }
+  if (typeof radius === "undefined") {
+    radius = 5;
+  }
+  if (typeof radius === "number") {
+    radius = {
+      tl: radius,
+      tr: radius,
+      br: radius,
+      bl: radius,
+    };
+  } else {
+    var defaultRadius = {
+      tl: 0,
+      tr: 0,
+      br: 0,
+      bl: 0,
+    };
+    for (var side in defaultRadius) {
+      radius[side] = radius[side] || defaultRadius[side];
     }
-    if (typeof radius === 'undefined') {
-        radius = 5;
-    }
-    if (typeof radius === 'number') {
-        radius = {
-            tl: radius,
-            tr: radius,
-            br: radius,
-            bl: radius
-        };
-    } else {
-        var defaultRadius = {
-            tl: 0,
-            tr: 0,
-            br: 0,
-            bl: 0
-        };
-        for (var side in defaultRadius) {
-            radius[side] = radius[side] || defaultRadius[side];
-        }
-    }
-    ctx.beginPath();
-    ctx.moveTo(x + radius.tl, y);
-    ctx.lineTo(x + width - radius.tr, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-    ctx.lineTo(x + width, y + height - radius.br);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-    ctx.lineTo(x + radius.bl, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-    ctx.lineTo(x, y + radius.tl);
-    ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-    ctx.closePath();
-    if (fill) {
-        ctx.fill();
-    }
-    if (stroke) {
-        ctx.stroke();
-    }
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius.tl, y);
+  ctx.lineTo(x + width - radius.tr, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+  ctx.lineTo(x + width, y + height - radius.br);
+  ctx.quadraticCurveTo(
+    x + width,
+    y + height,
+    x + width - radius.br,
+    y + height
+  );
+  ctx.lineTo(x + radius.bl, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+  ctx.lineTo(x, y + radius.tl);
+  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+  ctx.closePath();
+  if (fill) {
+    ctx.fill();
+  }
+  if (stroke) {
+    ctx.stroke();
+  }
 }
 
 export function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
-
 function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 export function generateRandomColor(useGrayscale) {
+  var baseColor = [256, 256, 256];
+  var red = getRandomInt(0, 256);
+  var green = getRandomInt(0, 256);
+  var blue = getRandomInt(0, 256);
 
-    var baseColor = [256, 256, 256];
-    var red = getRandomInt(0, 256);
-    var green = getRandomInt(0, 256);
-    var blue = getRandomInt(0, 256);
+  // mix the color
 
-    // mix the color
+  var mixture = 0.7;
 
-    var mixture = 0.7;
+  red = Math.round(red * mixture + baseColor[0] * (1 - mixture));
+  green = Math.round(green * mixture + baseColor[1] * (1 - mixture));
+  blue = Math.round(blue * mixture + baseColor[2] * (1 - mixture));
 
-    red = Math.round(red * mixture + baseColor[0] * (1 - mixture));
-    green = Math.round(green * mixture + baseColor[1] * (1 - mixture));
-    blue = Math.round(blue * mixture + baseColor[2] * (1 - mixture));
-
-    if (useGrayscale.val == 1) {
-        return rgbToHex(red, red, red);
-    } else {
-        return rgbToHex(red, green, blue);
-    }
+  if (useGrayscale.val == 1) {
+    return rgbToHex(red, red, red);
+  } else {
+    return rgbToHex(red, green, blue);
+  }
 }
 
 export function getLoremIpsum(numWords = 5) {
-    var baseText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida eu leo vitae imperdiet. Nam pulvinar luctus arcu, vel semper ligula efficitur in. Mauris non semper ante. Nullam scelerisque hendrerit urna, lacinia egestas enim laoreet vitae. Aliquam erat volutpat. Duis posuere magna libero, vel rhoncus nisl ullamcorper eu. Etiam ac libero consectetur, congue nisi quis, vulputate erat.";
-    var sentences = baseText.split(".");
-    var sentences_words = sentences.map(s => s.split(/[\s\.,]/));
+  var baseText =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus gravida eu leo vitae imperdiet. Nam pulvinar luctus arcu, vel semper ligula efficitur in. Mauris non semper ante. Nullam scelerisque hendrerit urna, lacinia egestas enim laoreet vitae. Aliquam erat volutpat. Duis posuere magna libero, vel rhoncus nisl ullamcorper eu. Etiam ac libero consectetur, congue nisi quis, vulputate erat.";
+  var sentences = baseText.split(".");
+  var sentences_words = sentences.map((s) => s.split(/[\s\.,]/));
 
-    var chosenSentenceNumber = getRandomInt(0, sentences.length - 1);
-    var chosenWords = sentences_words[chosenSentenceNumber].slice(0, numWords).join(" ");
+  var chosenSentenceNumber = getRandomInt(0, sentences.length - 1);
+  var chosenWords = sentences_words[chosenSentenceNumber]
+    .slice(0, numWords)
+    .join(" ");
 
-    return chosenWords;
+  return chosenWords;
 }

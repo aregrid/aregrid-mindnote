@@ -125,9 +125,7 @@ export default {
         setLocalStorage("mindnoteItems", localDB);
       }
     },
-  },
-  mounted() {
-    async function main() {
+    async main() {
       const { Workspace, Page, Text } = await import("@blocksuite/store");
       const { AffineSchemas } = await import("@blocksuite/blocks/models");
       const { EditorContainer } = await import("@blocksuite/editor");
@@ -138,7 +136,7 @@ export default {
 
       // Create default blocks in the page
       const pageBlockId = page.addBlock("affine:page", {
-        title: new Text("Hello Mindnote!"),
+        title: new Text(this.getDefaultTitle()),
       });
       const frameId = page.addBlock("affine:frame", {}, pageBlockId);
       page.addBlock(
@@ -153,9 +151,10 @@ export default {
       const editor = new EditorContainer();
       editor.page = page;
       document.querySelector("#editor-example").appendChild(editor);
-    }
-
-    main();
+    },
+  },
+  mounted() {
+    this.main();
   },
 };
 </script>

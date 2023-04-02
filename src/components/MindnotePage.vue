@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import Mindnote from "./Mindnote.vue";
+import Mindnote from "./MindnoteBox.vue";
 import { getLocalStorage, setLocalStorage } from "../utils/util.js";
-import mindnoteVue from "./mindnote.vue";
+import mindnoteVue from "./MindnoteBox.vue";
 import MindmapView from "./MindmapView/MindmapView";
 export default {
   name: "MindnotePage",

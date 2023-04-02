@@ -1,7 +1,7 @@
 <template>
   <div class="page-space">
     <div class="navbar">
-      <h3>Z Mindnote</h3>
+      <h3>Mindnote</h3>
     </div>
     <div class="msg" v-if="err">{{ msg }}</div>
     <div class="grid">

@@ -151,6 +151,7 @@ export default {
       editor.page = page;
       document.querySelector("#editor-example").appendChild(editor);
       this.editor = editor;
+      window.editor = editor;
     },
   },
   mounted() {

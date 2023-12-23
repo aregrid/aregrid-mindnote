@@ -1,10 +1,10 @@
-# mindnote
+# aregrid-mindnote
 
 a powelful mindnote by vue + javascript
 
 # preview
 
-https://aregrid.github.io/mindnote/#/
+https://aregrid.github.io/aregrid-mindnote/#/
 
 # quick start
 
@@ -18,4 +18,4 @@ npm run build
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2013-present, zhangchi
+Copyright (c) 2013-present, aregrid

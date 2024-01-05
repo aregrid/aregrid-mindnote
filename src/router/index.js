@@ -15,6 +15,6 @@ const routes = [
 
 export default createRouter({
   // mode: "history",
-  history: createWebHistory("/mindnote/#/"), //
+  history: createWebHistory("/aregrid-mindnote/#/"), //
   routes,
 });
